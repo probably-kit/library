@@ -7,7 +7,32 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="header">
+        <p>Library</p>
+        <button>Sync data from Telegram</button>
+    </div>
+    <div class="content">
+        <button id="openPopupButton">Add book</button>
+        <div id="popupContainer" class="popup">
+            <div class="popup-content">
+                <!-- Close button for the popup -->
+                <span class="close" onclick="closePopup()">&times;</span>
+                <!-- Popup content, including form -->
+                <h2>Add new book</h2>
+                <form action="#" method="post">
+
+                    <input type="text" id="title" name="title" placeholder="Title" required>
+                    <input type="text" id="author" name="author" placeholder="Author" required>
+                    <input type="text" id="pages" name="pages" placeholder="Amount of pages" required>
+                    <!-- Confirm button for form submission -->
+                    <button type="button"  id="confirmButton" onclick="addGridElement()">Submit</button>
+                </form>
+            </div>
+        </div>
     
+        <div id="gridContainer" class="grid-container"></div>
+    </div>
 </body>
+<script src="main.js"></script>
 
 </html>

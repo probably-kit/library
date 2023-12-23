@@ -17,6 +17,10 @@ function closePopup() {
     }, 500);
 }
 
+function onTelegramAuth(user) {
+    alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
+    }
+
 // Event listener for confirming the form submission
 document.getElementById('confirmButton').addEventListener('click', confirmForm);
 

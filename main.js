@@ -17,37 +17,57 @@ function closePopup() {
     }, 500);
 }
 
+
 function onTelegramAuth(user) {
     alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
     }
 
 // Event listener for confirming the form submission
-document.getElementById('confirmButton').addEventListener('click', confirmForm);
+const infoArray = [];
 
-// Function to confirm the form submission
-function confirmForm() {
-    // Add your form submission logic here
-    alert('Form submitted!');
-    closePopup(); // Close the popup after confirmation
+function addInfoToGrid() {
+    // Get form values
+    const elementTitle = document.getElementById('title').value;
+    const elementAuthor = document.getElementById('author').value;
+    const elementPages = document.getElementById('pages').value;
 
-    // const name = document.getElementById('name').value;
-    // const email = document.getElementById('email').value;
-    const title = document.getElementById("title").value;
-    const author = document.getElementById("author").value;
-    const pages = document.getElementById("pages").value;
+    // Create an object with form information
+    const infoObject = {
+        title: elementTitle,
+        author: elementAuthor,
+        pages : elementPages
+    };
 
-    // // Create a new grid item
-    const gridItem = document.createElement('div');
-    gridItem.className = 'grid-item';
-    gridItem.innerHTML = `<p><strong>Title:</strong> ${title}</p>
-     <p><strong>Author:</strong> ${author}</p>
-     <p><strong>Pages:</strong>${pages}</p>`;
+    // Add the object to the array
+    infoArray.push(infoObject);
 
-    // // Append the grid item to the container
-    document.getElementById('gridContainer').appendChild(gridItem);
-
-    // // Clear the form fields after submitting
+    // Clear the form fields after submitting
     document.getElementById('title').value = '';
     document.getElementById('author').value = '';
-    document.getElementById('pages').value = ''
+    document.getElementById('pages').value = '';
+
+    // Update the grid with the new information
+    updateGrid();
 }
+
+function updateGrid() {
+    // Clear existing grid elements
+    document.getElementById('gridContainer').innerHTML = '';
+
+    // Create grid elements based on the objects in the array
+    infoArray.forEach(infoObject => {
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item';
+        gridItem.innerHTML = `<p><strong>Title:</strong> ${infoObject.title}</p>
+              <p><strong>Author:</strong> ${infoObject.author}</p>
+              <p><strong>Pages:</strong>${infoObject.pages}</p>`;
+        document.getElementById('gridContainer').appendChild(gridItem);
+    });
+}
+
+//   // // Create a new grid item
+//     const gridItem = document.createElement('div');
+//     gridItem.className = 'grid-item';
+//     gridItem.innerHTML = `<p><strong>Title:</strong> ${title}</p>
+//      <p><strong>Author:</strong> ${author}</p>
+//      <p><strong>Pages:</strong>${pages}</p>`;

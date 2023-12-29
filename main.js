@@ -1,73 +1,71 @@
-// Event listener for opening the popup
-document.getElementById('openPopupButton').addEventListener('click', openPopup);
-
-// Function to open the popup
-function openPopup() {
-    document.getElementById('popupContainer').style.display = 'flex';
-    setTimeout(() => {
-        document.getElementById('popupContainer').style.opacity = '1';
-    }, 100);
-}
-
-// Function to close the popup
-function closePopup() {
-    document.getElementById('popupContainer').style.opacity = '0';
-    setTimeout(() => {
-        document.getElementById('popupContainer').style.display = 'none';
-    }, 500);
-}
-
-
-function onTelegramAuth(user) {
-    alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
+class PopupManager {
+    constructor(containerId) {
+        this.container = document.getElementById(containerId);
+        this.closeButton = this.container.querySelector('.close');
+        this.initEventListeners();
     }
 
-// Event listener for confirming the form submission
-const infoArray = [];
+    initEventListeners() {
+        this.closeButton.addEventListener('click', () => this.close());
+    }
 
-function addInfoToGrid() {
-    // Get form values
-    const elementTitle = document.getElementById('title').value;
-    const elementAuthor = document.getElementById('author').value;
-    const elementPages = document.getElementById('pages').value;
+    open() {
+        if (!this.container) return;
+        this.container.style.display = 'flex';
+        setTimeout(() => this.container.style.opacity = '1', 100);
+    }
 
-    // Create an object with form information
-    const infoObject = {
-        title: elementTitle,
-        author: elementAuthor,
-        pages : elementPages
-    };
+    close() {
+        if (!this.container) return;
+        this.container.style.opacity = '0';
+        setTimeout(() => this.container.style.display = 'none', 500);
+    }
+}
 
-    // Add the object to the array
-    infoArray.push(infoObject);
+class GridManager {
+    constructor(gridContainerId) {
+        this.gridContainer = document.getElementById(gridContainerId);
+        this.infoArray = [];
+    }
 
-    // Clear the form fields after submitting
+    addInfoToGrid(title, author, pages) {
+        this.infoArray.push({ title, author, pages });
+        this.updateGrid();
+    }
+
+    updateGrid() {
+        if (!this.gridContainer) return;
+        this.gridContainer.innerHTML = '';
+        this.infoArray.forEach(info => {
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+            gridItem.innerHTML = `<p><strong>Title:</strong> ${info.title}</p>
+                                  <p><strong>Author:</strong> ${info.author}</p>
+                                  <p><strong>Pages:</strong>${info.pages}</p>`;
+            this.gridContainer.appendChild(gridItem);
+        });
+    }
+}
+
+// Instantiate classes
+const popupManager = new PopupManager('popupContainer');
+const gridManager = new GridManager('gridContainer');
+
+document.getElementById('openPopupButton').addEventListener('click', () => popupManager.open());
+
+document.getElementById('confirmButton').addEventListener('click', () => {
+    const title = document.getElementById('title').value;
+    const author = document.getElementById('author').value;
+    const pages = document.getElementById('pages').value;
+
+    gridManager.addInfoToGrid(title, author, pages);
+
     document.getElementById('title').value = '';
     document.getElementById('author').value = '';
     document.getElementById('pages').value = '';
+});
 
-    // Update the grid with the new information
-    updateGrid();
+// Telegram Authentication (assuming it remains the same)
+function onTelegramAuth(user) {
+    UserInfoAlert.onTelegramAuth(user);
 }
-
-function updateGrid() {
-    // Clear existing grid elements
-    document.getElementById('gridContainer').innerHTML = '';
-
-    // Create grid elements based on the objects in the array
-    infoArray.forEach(infoObject => {
-        const gridItem = document.createElement('div');
-        gridItem.className = 'grid-item';
-        gridItem.innerHTML = `<p><strong>Title:</strong> ${infoObject.title}</p>
-              <p><strong>Author:</strong> ${infoObject.author}</p>
-              <p><strong>Pages:</strong>${infoObject.pages}</p>`;
-        document.getElementById('gridContainer').appendChild(gridItem);
-    });
-}
-
-//   // // Create a new grid item
-//     const gridItem = document.createElement('div');
-//     gridItem.className = 'grid-item';
-//     gridItem.innerHTML = `<p><strong>Title:</strong> ${title}</p>
-//      <p><strong>Author:</strong> ${author}</p>
-//      <p><strong>Pages:</strong>${pages}</p>`;

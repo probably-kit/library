@@ -25,7 +25,18 @@ class PopupManager {
 class GridManager {
     constructor(gridContainerId) {
         this.gridContainer = document.getElementById(gridContainerId);
-        this.infoArray = [];
+        this.infoArray = [
+            { title: "Pride and Prejudice", author: "Jane Austen", pages: 432 },
+            { title: "1984", author: "George Orwell", pages: 328 },
+            { title: "To Kill a Mockingbird", author: "Harper Lee", pages: 384 },
+            { title: "The Lord of the Rings: The Fellowship of the Ring", author: "J.R.R. Tolkien", pages: 423 },
+            { title: "One Hundred Years of Solitude", author: "Gabriel García Márquez", pages: 417 },
+            { title: "The Great Gatsby", author: "F. Scott Fitzgerald", pages: 180 },
+            { title: "Frankenstein",author:"Mary Shelley", pages: 280 },
+            { title: "War and Peace", author: "Leo Tolstoy", pages: 1225 },
+            { title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", pages: 309 }
+        ];
+        this.updateGrid(); // Automatically populate the grid with the books info
     }
 
     addInfoToGrid(title, author, pages) {
@@ -41,7 +52,7 @@ class GridManager {
             gridItem.className = 'grid-item';
             gridItem.innerHTML = `<p><strong>Title:</strong> ${info.title}</p>
                                   <p><strong>Author:</strong> ${info.author}</p>
-                                  <p><strong>Pages:</strong>${info.pages}</p>`;
+                                  <p><strong>Pages:</strong> ${info.pages}</p>`;
             this.gridContainer.appendChild(gridItem);
         });
     }
@@ -63,9 +74,11 @@ document.getElementById('confirmButton').addEventListener('click', () => {
     document.getElementById('title').value = '';
     document.getElementById('author').value = '';
     document.getElementById('pages').value = '';
+    popupManager.close(); // Close the popup after adding the info
 });
 
-// Telegram Authentication (assuming it remains the same)
+// Assuming the Telegram Authentication function and UserInfoAlert are defined elsewhere in your script.
 function onTelegramAuth(user) {
-    UserInfoAlert.onTelegramAuth(user);
+    console.log(user); // This is just a placeholder. Adapt this function based on your actual Telegram Auth integration.
 }
+
